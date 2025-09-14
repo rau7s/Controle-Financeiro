@@ -27,13 +27,34 @@ legenda_valor.pack(pady=5)
 entrada_valor = tk.Entry(tela, width=40)
 entrada_valor.pack(pady=5)
 
+# Lista que vai guardar os registros
+registros = []
+
 # 3. Função que vai ser chamada quando apertar o botão (Passo 4)
 def adicionar_registro():
     descricao = entrada_desc.get() # pega a desc digitada
     valor = entrada_valor.get() # pega o valor digitado
 
-    print(f"Descrição {descricao}, Valor: {valor}") # por enquanto só printando mesmo
+    if descricao == "" or valor == "":
+        messagebox.showwarning("Preencher tudo né rapa! ")
+        return
+    
+    try:
+        valor = float(valor)
+    except:
+        messagebox.showerror("Q numero é esse po??")
+        return
+    
+    #salva o registro na lista
+    registros.append({"descricao": descricao, "valor": valor})
 
+    print(f'Registros atuais: {registros}')
+
+    # Limpa os campos depois de adicionar
+    entrada_desc.delete(0, tk.END)
+    entrada_valor.delete(0, tk.END)
+
+    
 # 4. Criar botão p adicionar um registro de valor
 btn_adc = tk.Button(tela, text="Adicionar", command=adicionar_registro)
 btn_adc.pack(pady=10)
