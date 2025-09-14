@@ -4,31 +4,38 @@ import sqlite3
 import csv
 import os
 
-# tkinter p interface  
+# Criar tela principal
+tela = tk.Tk()
+tela.title("Minha carteiraaa")
+tela.geometry("600x400")
 
-DB_FILE = "wallet.db"
+"""
+tk.label  cria um texto fixo na tela
+tk.Entry cria  caixa de texto onde da p digitar
+.pack(pady=5)  poe elemento na tela e adiciona um espaçamento vertical (5px).
+"""
 
-def init_db():
-    with sqlite3.connect(DB_FILE) as conn: # with sqlite3.connect → abre conexão e fecha sozinha no final.
-        cur = conn.cursor()
-        cur.execute("""
-            CREATE TABLE IF NOT EXISTS transactions (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                date TEXT NOT NULL,
-                type TEXT NOT NULL CHECK(type IN ('receita','despesa')), # só pode ser receita ou depesa
-                category TEXT NOT NULL,
-                amount REAL NOT NULL,
-                bank TEXT,
-                asset TEXT
-            )
-        """)
+# 1. Criar Campos para Descrição
+legenda_desc = tk.Label(tela, text="Descrição: ")   # texto fixo
+legenda_desc.pack(pady=5) # pack = posiciona o elemento na janela
+entrada_desc = tk.Entry(tela, width=40)
+entrada_desc.pack(pady=5)
 
-def add_transaction(date, ttype, category, amount, bank, asset):
-    with sqlite3.connect(DB_FILE) as conn:
-        cur = conn.cursor()
-        cur.execute(
-            "INSERT INTO transactions (date, type, category, amount, bank, asset) VALUES (?,?,?,?,?,?)",
-            (date, ttype, category, amount, bank, asset)
-        )
-        conn.commit()            
-        )
+# 2. Criar campos p valor
+legenda_valor = tk.Label(tela, text="Valor: ")
+legenda_valor.pack(pady=5)
+entrada_valor = tk.Entry(tela, width=40)
+entrada_valor.pack(pady=5)
+
+# 3. Função que vai ser chamada quando apertar o botão (Passo 4)
+def adicionar_registro():
+    descricao = entrada_desc.get() # pega a desc digitada
+    valor = entrada_valor.get() # pega o valor digitado
+
+    print(f"Descrição {descricao}, Valor: {valor}") # por enquanto só printando mesmo
+
+# 4. Criar botão p adicionar um registro de valor
+btn_adc = tk.Button(tela, text="Adicionar", command=adicionar_registro)
+btn_adc.pack(pady=10)
+
+tela.mainloop()
